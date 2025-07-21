@@ -40,3 +40,10 @@ app.post("/api/login", async (req, res) => {
 app.listen(port, () => {
   console.log(`Express backend server is running at http://localhost:${port}`);
 });
+
+// error handling code
+app.use((err, req, res, next) => {
+  // Log the error stack and send a generic error response
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
