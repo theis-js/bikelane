@@ -18,10 +18,6 @@ app.use(express.json());
 
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.render("index.ejs");
-});
-
 app.post("/api/login", async (req, res) => {
   console.log(req.body);
 
@@ -42,5 +38,5 @@ app.post("/api/login", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+  console.log(`Express backend server is running at http://localhost:${port}`);
 });

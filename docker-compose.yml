@@ -1,6 +1,6 @@
 services:
-  client:
-    container_name: react-client
+  react-frontend:
+    container_name: bikelane-frontend_react
     build: ./client
     ports:
       - "5001:5001"
@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   bikelane-backend:
-    container_name: bikelane-backend
+    container_name: bikelane-backend_express
     build: ./backend
     ports:
       - "5002:5002"
@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
 
   mysql:
-    container_name: mysql-db
+    container_name: bikelane-mysql
     image: mysql:8.0
     restart: unless-stopped
     environment:
@@ -37,7 +37,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
 volumes:
   mysql-data:
