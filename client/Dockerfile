@@ -1,12 +1,12 @@
 FROM node:20-alpine
 
-WORKDIR /backend
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
-EXPOSE 5002
+EXPOSE 5001
 
 CMD ["npm", "start"]

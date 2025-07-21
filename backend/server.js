@@ -1,7 +1,7 @@
 //statics
 import express from "express";
 const app = express();
-const port = 4000;
+const port = 5002;
 
 //view engine ejs
 app.set("view engine", "ejs");
