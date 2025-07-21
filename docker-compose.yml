@@ -1,0 +1,32 @@
+services:
+
+  backend:
+    container_name: bikelane-backend
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: D7Ze0lwV9hMrNQHdz1Q8yi0MIQuOO8
+      DB_NAME: bikelane
+    depends_on:
+      - mysql
+    volumes:
+      - ./backend:/bikelane-backend
+    restart: unless-stopped
+
+  mysql:
+    container_name: mysql-db
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: D7Ze0lwV9hMrNQHdz1Q8yi0MIQuOO8
+      MYSQL_DATABASE: bikelane
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mysql-data:
