@@ -10,6 +10,9 @@ import {
   deleteUser,
   getAllUsers,
 } from "./database.js";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import jose from "jose";
 
 //view engine ejs
 app.set("view engine", "ejs");
@@ -24,7 +27,7 @@ app.post("/api/login", async (req, res) => {
   loginUser(req.body.username, req.body.password)
     .then((result) => {
       if (result.success) {
-        res.status(200).json(result, { message: "Login successful" });
+        res.status(200).json(result, { message: "Login successful" }); // Here send the jwt token
       } else {
         res.status(401).json(result, { message: "Invalid credentials" });
       }
