@@ -31,6 +31,9 @@ function App() {
             <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
               Created
             </th>
+            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Role
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-100">
@@ -43,6 +46,7 @@ function App() {
               <td className="px-4 py-2 whitespace-nowrap">{user.email}</td>
               <td className="px-4 py-2 whitespace-nowrap">{user.password}</td>
               <td className="px-4 py-2 whitespace-nowrap">{user.created}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{user.role}</td>
             </tr>
           ))}
         </tbody>
