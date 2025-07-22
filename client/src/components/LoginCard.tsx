@@ -42,12 +42,13 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
                     .then((users) => {
                       localStorage.setItem("users", JSON.stringify(users));
                     });
+                  document.location.reload();
                 } else if (response.status === 401) {
                   alert("Invalid credentials");
                 }
               })
               .catch((error) => {
-                console.error("Login failed:", error);
+                console.log("Login failed: ", error);
               });
           }}
           className="space-y-4 text-black"
@@ -80,15 +81,19 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <input
-            type="submit"
-            value="Login"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition"
-          />
+          {Cookies.get("name") ? (
+            <p></p>
+          ) : (
+            <input
+              type="submit"
+              value="Login"
+              className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition"
+            />
+          )}
         </form>
         {Cookies.get("name") ? (
           <button
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-full bg-black text-white font-semibold py-2 rounded-md hover:bg-green-400 transition"
             onClick={logout}
           >
             Logout
