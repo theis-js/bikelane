@@ -24,9 +24,9 @@ app.post("/api/login", async (req, res) => {
   loginUser(req.body.username, req.body.password)
     .then((result) => {
       if (result.success) {
-        res.status(200).json(result);
+        res.status(200).json(result, { message: "Login successful" });
       } else {
-        res.status(401).json(result);
+        res.status(401).json(result, { message: "Invalid credentials" });
       }
     })
     .catch((err) => {
@@ -34,6 +34,17 @@ app.post("/api/login", async (req, res) => {
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });
+    });
+});
+
+app.get("/api/getAllUsers", async (req, res) => {
+  getAllUsers()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+      console.error("Error fetching users:", err);
+      res.status(500).json({ success: false, message: "Internal server error" });
     });
 });
 

@@ -1,20 +1,32 @@
+import { useState } from "react";
 import React from "react";
+import LoginCard from "./LoginCard";
+import { greeting } from "../utils/functions";
 
 const Header: React.FC = () => {
+  const [loginCardVisible, setLoginCardVisible] = useState(false);
+
+  const closeLoginCard = () => {
+    setLoginCardVisible(false);
+  };
+
+  let loginBtnVal: string = greeting();
+
   return (
     <header className="bg-blue-600 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Bikelane Web</h1>
+        <h1 className="text-xl font-bold">Bikelane <strong>Admin Panel</strong></h1>
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <a href="" className="hover:underline">
-                Login
+              <a className="hover:underline">
+                <button onClick={() => setLoginCardVisible(true)}>{loginBtnVal ?? "Login"}</button>
               </a>
             </li>
           </ul>
         </nav>
       </div>
+      <div>{loginCardVisible && <LoginCard onClose={closeLoginCard} />}</div>
     </header>
   );
 };
