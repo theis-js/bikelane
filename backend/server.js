@@ -9,35 +9,35 @@ import {
   updateUser,
   deleteUser,
   getAllUsers,
-} from "./database.js";
+} from "./services/database.js";
+import { generateToken, authenticate } from "./services/tokenService.js";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import jose from "jose";
 
 //view engine ejs
 app.set("view engine", "ejs");
 
 app.use(express.json());
-
 app.use(cors());
+app.use(cookieParser());
 
 app.post("/api/login", async (req, res) => {
   console.log(req.body);
 
-  loginUser(req.body.username, req.body.password)
-    .then((result) => {
-      if (result.success) {
-        res.status(200).json(result, { message: "Login successful" }); // Here send the jwt token
-      } else {
-        res.status(401).json(result, { message: "Invalid credentials" });
-      }
-    })
-    .catch((err) => {
-      console.error("Error logging in:", err);
-      res
-        .status(500)
-        .json({ success: false, message: "Internal server error" });
-    });
+  try {
+    const result = await loginUser(req.body.username, req.body.password);
+    if (result.success) {
+      const userToken = await generateToken({ username: req.body.username });
+      res.status(200).json(
+        result, // This is the user data that logged in
+        { message: "Login successful", token: userToken }
+      );
+    } else {
+      res.status(401).json(result, { message: "Invalid credentials" });
+    }
+  } catch (err) {
+    console.error("Error logging in:", err);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
 
 app.get("/api/getAllUsers", async (req, res) => {
@@ -47,7 +47,9 @@ app.get("/api/getAllUsers", async (req, res) => {
     })
     .catch((err) => {
       console.error("Error fetching users:", err);
-      res.status(500).json({ success: false, message: "Internal server error" });
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
     });
 });
 

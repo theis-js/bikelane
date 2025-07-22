@@ -34,6 +34,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
               .then(async (response) => {
                 if (response.ok) {
                   const data = await response.json();
+                  Cookies.set("token", data.token, { expires: 7 });
                   onClose();
                   Cookies.set("name", data.user.first_name, { expires: 7 });
                   await fetch("http://localhost:5002/api/getAllUsers")
