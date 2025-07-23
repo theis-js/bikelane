@@ -1,13 +1,25 @@
 services:
-#  react-frontend:
-#    container_name: bikelane-frontend_react
-#    build: ./client
+#  admin_react-frontend:
+#    container_name: bikelane-frontend_react-admin
+#    build: ./frontend_admin
 #    ports:
 #      - "5001:5001"
 #    environment:
 #      - CHOKIDAR_USEPOLLING=true
 #    volumes:
-#      - ./client:/app
+#      - ./frontend_admin:/app
+#      - /app/node_modules
+#    restart: unless-stopped
+
+#  user_react-frontend:
+#    container_name: bikelane-frontend_react-user
+#    build: ./frontend_user
+#    ports:
+#      - "5003:5003"
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
+#    volumes:
+#      - ./frontend_user:/app
 #      - /app/node_modules
 #    restart: unless-stopped
 
