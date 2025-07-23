@@ -11,7 +11,7 @@ const Sidebar: React.FC = () => (
         className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center shadow-lg"
       />
       <span className="font-extrabold text-2xl text-blue-700 tracking-wide drop-shadow">
-        Bikelanes
+        Web-Panel
       </span>
     </div>
     <nav>

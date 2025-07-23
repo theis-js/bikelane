@@ -1,7 +1,7 @@
 import { MoreVertical } from "lucide-react";
 import React from "react";
 import { useEffect, useState } from "react";
-import { deleteUser } from "../utils/functions.ts";
+import { deleteUser, updateUserFunc } from "../utils/functions.ts";
 
 const selectedUsers: Record<number, boolean> = {};
 
@@ -22,6 +22,11 @@ interface UserTableProps {
 
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
+  const [userList, setUserList] = useState<User[]>(users);
+
+  useEffect(() => {
+    setUserList(users);
+  }, [users]);
 
   const handleMenuClick = (userId: number) => {
     setOpenMenu(openMenu === userId ? null : userId);
@@ -29,13 +34,16 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
 
   const handleMenuClose = () => setOpenMenu(null);
 
+  const handleInputChange = (id: number, field: keyof User, value: string) => {
+    setUserList((prev) =>
+      prev.map((user) => (user.id === id ? { ...user, [field]: value } : user))
+    );
+  };
+
   return (
     <table className="min-w-full divide-y divide-gray-200 shadow rounded-lg overflow-hidden">
       <thead className="bg-gray-50">
         <tr>
-          <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-            <input type="checkbox" name="checkAll" id="checkAll" />
-          </th>
           <th className="px-4 py-2 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
             #
           </th>
@@ -66,35 +74,74 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-100">
-        {users.map((user, idx) => (
+        {userList.map((user, idx) => (
           <tr key={user.id} className="hover:bg-blue-50 transition">
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="checkbox"
-                name="checkUser"
-                id={`checkUser-${user.id}`}
-                checked={!!selectedUsers[user.id]}
-              />
-            </td>
             <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-25" value={user.username} />
+              <input
+                type="text"
+                className="w-20"
+                id={`username-${user.id}`}
+                value={user.username}
+                onChange={(e) =>
+                  handleInputChange(user.id, "username", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-20" value={user.first_name} />
+              <input
+                type="text"
+                className="w-20"
+                id={`first_name-${user.id}`}
+                value={user.first_name}
+                onChange={(e) =>
+                  handleInputChange(user.id, "first_name", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-20" value={user.last_name} />
+              <input
+                type="text"
+                className="w-20"
+                id={`last_name-${user.id}`}
+                value={user.last_name}
+                onChange={(e) =>
+                  handleInputChange(user.id, "last_name", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-50" value={user.email} />
+              <input
+                type="text"
+                className="w-60"
+                id={`email-${user.id}`}
+                value={user.email}
+                onChange={(e) =>
+                  handleInputChange(user.id, "email", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-25" value={user.password} />
+              <input
+                type="text"
+                className="w-25"
+                id={`password-${user.id}`}
+                value={user.password}
+                onChange={(e) =>
+                  handleInputChange(user.id, "password", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap">{user.created}</td>
             <td className="px-4 py-2 whitespace-nowrap">
-              <input type="text" className="w-15" value={user.role} />
+              <input
+                type="text"
+                className="w-15"
+                value={user.role}
+                onChange={(e) =>
+                  handleInputChange(user.id, "role", e.target.value)
+                }
+              />
             </td>
             <td className="px-4 py-2 whitespace-nowrap relative">
               <button
@@ -109,10 +156,16 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                   className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10"
                   onMouseLeave={handleMenuClose}
                 >
-                  <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                    Edit
+                  <button
+                    onClick={() => updateUserFunc(user.id)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Save
                   </button>
-                  <button onClick={() => deleteUser(user.id)} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                  <button
+                    onClick={() => deleteUser(user.id)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
                     Delete
                   </button>
                 </div>

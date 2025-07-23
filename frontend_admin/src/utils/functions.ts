@@ -4,6 +4,43 @@ export const greeting = () => {
   return Cookies.get("name") ?? "Login";
 };
 
+export const loadTheme = () => {
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    // Switch to dark theme
+    console.log("dark")
+    document.documentElement.classList.add("dark");
+    document.body.classList.add("dark");
+    Cookies.set("theme", "dark", { expires: 365 });
+  } else {
+    // Switch to light theme
+    console.log("light")
+    document.documentElement.classList.remove("dark");
+    document.body.classList.remove("dark");
+    Cookies.set("theme", "light", { expires: 365 });
+  }
+};
+
+export const changeTheme = () => {
+  if (Cookies.get("theme") === "dark") {
+    // Switch to light theme
+    console.log("light")
+    document.documentElement.classList.remove("dark");
+    document.body.classList.remove("dark");
+    Cookies.set("theme", "light", { expires: 365 });
+  } else if (Cookies.get("theme") === "light") {
+    // Switch to dark theme
+    console.log("dark")
+    document.documentElement.classList.add("dark");
+    document.body.classList.add("dark");
+    Cookies.set("theme", "dark", { expires: 365 });
+  } else {
+    console.error("Theme not set or recognized");
+  }
+};
+
 export const logout = () => {
   Cookies.remove("name");
   Cookies.remove("token");
@@ -22,8 +59,7 @@ export const deleteUser = (id: number) => {
   })
     .then((response) => {
       if (response.ok) {
-        localStorage.removeItem("users");
-        document.location.reload();
+        replaceUsers();
       } else {
         alert("Failed to delete user");
       }
@@ -33,8 +69,9 @@ export const deleteUser = (id: number) => {
     });
 };
 
-export const fetchUsers = async () => {
-  fetch("http://localhost:5002/api/getAllUsers", {
+export const replaceUsers = async () => {
+  localStorage.removeItem("users");
+  await fetch("http://localhost:5002/api/getAllUsers", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
@@ -43,5 +80,70 @@ export const fetchUsers = async () => {
     .then((res) => res.json())
     .then((users) => {
       localStorage.setItem("users", JSON.stringify(users));
+      window.location.reload();
     });
+};
+
+export const updateUserFunc = async (userID: number) => {
+  console.log("UpdateFunc" + userID);
+
+  // Validate that required DOM elements exist
+  const usernameEl = document.getElementById(
+    `username-${userID}`
+  ) as HTMLInputElement;
+  const firstNameEl = document.getElementById(
+    `first_name-${userID}`
+  ) as HTMLInputElement;
+  const lastNameEl = document.getElementById(
+    `last_name-${userID}`
+  ) as HTMLInputElement;
+  const emailEl = document.getElementById(
+    `email-${userID}`
+  ) as HTMLInputElement;
+  const passwordEl = document.getElementById(
+    `password-${userID}`
+  ) as HTMLInputElement;
+
+  if (!usernameEl || !firstNameEl || !lastNameEl || !emailEl) {
+    console.error("Required form elements not found");
+    alert("Form elements not found");
+    return;
+  }
+
+  const userData = {
+    id: userID,
+    username: usernameEl.value,
+    first_name: firstNameEl.value,
+    last_name: lastNameEl.value,
+    email: emailEl.value,
+    password: passwordEl?.value || "", // password might be optional
+  };
+
+  console.log("Sending user data:", userData);
+
+  try {
+    const response = await fetch("http://localhost:5002/api/updateUser", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
+
+    console.log("Response status:", response.status);
+    console.log("Response ok:", response.ok);
+
+    if (response.ok) {
+      console.log("User updated successfully");
+      replaceUsers();
+    } else {
+      const errorText = await response.text();
+      console.error("Server error:", response.status, errorText);
+      alert(`Failed to update user: ${response.status} - ${errorText}`);
+    }
+  } catch (error) {
+    console.error("Network error updating user:", error);
+    alert("Network error occurred while updating user");
+  }
 };

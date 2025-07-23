@@ -68,6 +68,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
             <input
               type="text"
               name="username"
+              required
               id="username"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -82,6 +83,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
             <input
               type="password"
               name="password"
+              required
               id="password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

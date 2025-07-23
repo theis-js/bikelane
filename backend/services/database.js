@@ -62,13 +62,14 @@ export async function updateUser(
   first_name,
   last_name,
   password,
-  email
+  email,
+  id
 ) {
   try {
-    // Update user details based on username
+    // Update user details based on id
     const [result] = await pool.query(
-      "UPDATE users SET first_name = ?, last_name = ?, password = ?, email = ? WHERE username = ?",
-      [first_name, last_name, password, email, username]
+      "UPDATE users SET first_name = ?, last_name = ?, password = ?, email = ?, username = ? WHERE id = ?",
+      [first_name, last_name, password, email, username, id]
     );
     const resultOfquery = result.affectedRows;
 

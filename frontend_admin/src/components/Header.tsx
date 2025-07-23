@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 import LoginCard from "./LoginCard";
 import { greeting } from "../utils/functions";
+import { changeTheme } from "../utils/functions";
 
 const Header: React.FC = () => {
   const [loginCardVisible, setLoginCardVisible] = useState(false);
@@ -22,6 +23,9 @@ const Header: React.FC = () => {
           <ul className="flex space-x-4">
             <li>
               <a className="hover:underline">
+                <button onClick={() => changeTheme()} className="bg-blue-700 shadow-md hover:bg-blue-800 transition padding px-4 py-2 rounded-md text-white font-semibold">
+                  Change Theme
+                </button>
                 <button
                   onClick={() => setLoginCardVisible(true)}
                   className="bg-blue-700 shadow-md hover:bg-blue-800 transition padding px-4 py-2 rounded-md text-white font-semibold"

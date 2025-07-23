@@ -52,7 +52,7 @@ app.get("/api/getAllUsers", authenticate, async (req, res) => {
   if (req.user.role === "admin") {
     getAllUsers()
       .then((users) => {
-        res.status(200).json(users);
+        res.status(200).json(users).reload();
       })
       .catch((err) => {
         console.error("Error fetching users:", err);
@@ -91,6 +91,33 @@ app.post("/api/deleteUser", authenticate, async (req, res) => {
     console.log("Access denied for user role");
   }
 });
+
+app.post("/api/updateUser", authenticate, async (req, res) => {
+  if (req.user.role === "admin") {
+    updateUser(
+      req.body.username,
+      req.body.first_name,
+      req.body.last_name,
+      req.body.password,
+      req.body.email,
+      req.body.id
+    )
+      .then((result) => {
+        if (result.success) {
+          res.status(200).json(result);
+        } else {
+          throw new Error("Failed to update user");
+        }
+      })
+      .catch((err) => {
+        console.error("Error updating user:", err);
+        res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      });
+    console.log("User updated successfully");
+  }
+})
 
 app.listen(port, () => {
   console.log(`Express backend server is running at http://localhost:${port}`);
