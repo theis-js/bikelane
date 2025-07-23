@@ -23,6 +23,7 @@ export async function authenticate(req, res, next) {
     req.user = payload;
     next();
   } catch (e) {
+    console.log("TOKEN SERVICE ERROR: ", e)
     return res.status(403).send("Invalid or expired token");
   }
 }
