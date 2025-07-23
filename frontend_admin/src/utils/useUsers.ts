@@ -8,6 +8,7 @@ export interface User {
   email: string;
   password: string;
   created: string;
+  role: string;
 }
 
 export function useUsers(): User[] {

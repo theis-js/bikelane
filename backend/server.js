@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.post("/api/login", async (req, res) => {
   try {
     const result = await loginUser(req.body.username, req.body.password);
-    if (result.success && result.role === "admin") {
+    if (result.success && result.user.role === "admin") {
       const userToken = await generateToken({
         role: result.user.role,
         username: result.user.username,
@@ -35,8 +35,10 @@ app.post("/api/login", async (req, res) => {
         token: userToken,
         ...result,
       });
-    } else if (result.success && result.role === "user") {
-      
+    } else if (result.success && result.user.role === "user") {
+      // PROBLEM BELOW DOESNT WORK
+      // FIX LATER
+      res.redirect("http://localhost:5003");
     } else {
       res.status(401).json(result, { message: "Invalid credentials" });
     }
@@ -65,6 +67,28 @@ app.get("/api/getAllUsers", authenticate, async (req, res) => {
   } else {
     res.status(500).json({ success: false, message: "Server error" });
     console.log("Server error while fetching users");
+  }
+});
+
+app.post("/api/deleteUser", authenticate, async (req, res) => {
+  if (req.user.role === "admin") {
+    deleteUser(req.body.id)
+      .then((result) => {
+        if (result.success) {
+          res.status(200).json(result);
+        } else {
+          throw new Error("Failed to delete user");
+        }
+      })
+      .catch((err) => {
+        console.error("Error deleting user:", err);
+        res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      });
+    console.log("User deleted successfully");
+  } else {
+    console.log("Access denied for user role");
   }
 });
 

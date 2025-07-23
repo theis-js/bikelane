@@ -22,7 +22,7 @@ export async function loginUser(username, password) {
   );
 
   // If a user is found, return success and user data
-  if (result.length > 0) {
+  if (result.length > 0 && result[0].role === "admin") {
     console.log("User found: ", result[0].username, " ", result[0].id);
     return { success: true, user: result[0] };
   } else {
@@ -95,18 +95,12 @@ export async function updateUser(
 }
 
 // Function to delete a user from the database
-export async function deleteUser(
-  username,
-  first_name,
-  last_name,
-  password,
-  email
-) {
+export async function deleteUser(id) {
   try {
     // Delete user based on username and password
     const [result] = await pool.query(
-      "DELETE FROM users WHERE username = ?  AND password = ?",
-      [username, password]
+      "DELETE FROM users WHERE id = ?",
+      [id]
     );
     const resultOfquery = result.affectedRows;
 
