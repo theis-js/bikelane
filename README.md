@@ -5,7 +5,12 @@ Bikelane is a full-stack web application for managing users and administration t
 ## Project Structure
 
 ```
-. ├── backend/ # Express.js backend API ├── frontend_admin/ # React admin panel (Vite + Tailwind CSS) ├── frontend_user/ # React user frontend (Vite + Tailwind CSS) ├── scheme.sql # MySQL database schema and mock data ├── docker-compose.yml # Multi-container orchestration └── README.md
+. ├── backend/ # Express.js backend API
+├── frontend_admin/ # React admin panel (Vite + Tailwind CSS)
+├── frontend_user/ # React user frontend (Vite + Tailwind CSS)
+├── scheme.sql # MySQL database schema and mock data
+├── docker-compose.yml # Multi-container orchestration
+└── README.md
 ```
 
 ## Features
