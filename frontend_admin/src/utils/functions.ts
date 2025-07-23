@@ -10,13 +10,13 @@ export const loadTheme = () => {
     window.matchMedia("(prefers-color-scheme: dark)").matches
   ) {
     // Switch to dark theme
-    console.log("dark")
+    console.log("dark");
     document.documentElement.classList.add("dark");
     document.body.classList.add("dark");
     Cookies.set("theme", "dark", { expires: 365 });
   } else {
     // Switch to light theme
-    console.log("light")
+    console.log("light");
     document.documentElement.classList.remove("dark");
     document.body.classList.remove("dark");
     Cookies.set("theme", "light", { expires: 365 });
@@ -26,13 +26,13 @@ export const loadTheme = () => {
 export const changeTheme = () => {
   if (Cookies.get("theme") === "dark") {
     // Switch to light theme
-    console.log("light")
+    console.log("light");
     document.documentElement.classList.remove("dark");
     document.body.classList.remove("dark");
     Cookies.set("theme", "light", { expires: 365 });
   } else if (Cookies.get("theme") === "light") {
     // Switch to dark theme
-    console.log("dark")
+    console.log("dark");
     document.documentElement.classList.add("dark");
     document.body.classList.add("dark");
     Cookies.set("theme", "dark", { expires: 365 });

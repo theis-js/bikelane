@@ -1,7 +1,5 @@
 import React from "react";
 import Header from "../components/Header";
-import userIcon from "../assets/circle-user-solid-full.svg";
-import logoIcon from "../assets/bicycle-solid-full.svg";
 import Cookies from "js-cookie"; // Add this import
 import Sidebar from "../components/Sidebar";
 

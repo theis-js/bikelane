@@ -4,7 +4,6 @@ import { useUsers } from "./utils/useUsers";
 import UserTable from "./components/UserTable";
 import { useEffect } from "react";
 import { loadTheme } from "./utils/functions";
-import { replaceUsers } from "./utils/functions";
 
 function App() {
   const users = useUsers();

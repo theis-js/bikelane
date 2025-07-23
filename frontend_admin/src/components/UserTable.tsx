@@ -3,8 +3,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { deleteUser, updateUserFunc } from "../utils/functions.ts";
 
-const selectedUsers: Record<number, boolean> = {};
-
 interface User {
   id: number;
   username: string;
@@ -74,7 +72,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-100">
-        {userList.map((user, idx) => (
+        {userList.map((user) => (
           <tr key={user.id} className="hover:bg-blue-50 transition">
             <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
             <td className="px-4 py-2 whitespace-nowrap">
