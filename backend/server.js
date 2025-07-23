@@ -21,16 +21,22 @@ app.use(cors());
 app.use(cookieParser());
 
 app.post("/api/login", async (req, res) => {
-  console.log(req.body);
-
   try {
     const result = await loginUser(req.body.username, req.body.password);
-    if (result.success) {
-      const userToken = await generateToken({ username: req.body.username });
-      res.status(200).json(
-        result, // This is the user data that logged in
-        { message: "Login successful", token: userToken }
-      );
+    if (result.success && result.role === "admin") {
+      const userToken = await generateToken({
+        role: result.user.role,
+        username: result.user.username,
+      });
+      console.log("User token generated: ", userToken);
+      res.status(200).json({
+        success: true,
+        message: "Login successful",
+        token: userToken,
+        ...result,
+      });
+    } else if (result.success && result.role === "user") {
+      
     } else {
       res.status(401).json(result, { message: "Invalid credentials" });
     }
@@ -40,17 +46,26 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-app.get("/api/getAllUsers", async (req, res) => {
-  getAllUsers()
-    .then((users) => {
-      res.status(200).json(users);
-    })
-    .catch((err) => {
-      console.error("Error fetching users:", err);
-      res
-        .status(500)
-        .json({ success: false, message: "Internal server error" });
-    });
+app.get("/api/getAllUsers", authenticate, async (req, res) => {
+  if (req.user.role === "admin") {
+    getAllUsers()
+      .then((users) => {
+        res.status(200).json(users);
+      })
+      .catch((err) => {
+        console.error("Error fetching users:", err);
+        res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      });
+    console.log("Fetched all users successfully");
+  } else if (req.user.role === "user") {
+    res.status(403).json({ success: false, message: "Access denied" });
+    console.log("Access denied for user role");
+  } else {
+    res.status(500).json({ success: false, message: "Server error" });
+    console.log("Server error while fetching users");
+  }
 });
 
 app.listen(port, () => {
