@@ -3,9 +3,10 @@ import Cookies from "js-cookie";
 import { logout, loginUser } from "../utils/userHandler";
 type LoginCardProps = {
   onClose: () => void;
+  changeAuth?: (isLoggedIn: boolean) => void;
 };
 
-const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
+const LoginCard: React.FC<LoginCardProps> = ({ onClose, changeAuth }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/35">
       <div className="max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-md p-8 relative">
@@ -26,6 +27,10 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
             const username = formData.get("username");
             const password = formData.get("password");
             loginUser(username as string, password as string);
+            if (changeAuth) {
+              changeAuth(true);
+              onClose();
+            }
           }}
           className="space-y-4 text-black dark:text-white"
         >
@@ -69,10 +74,16 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
             />
           )}
         </form>
-        {Cookies.get("name") ? (
+        {Cookies.get("token") ? (
           <button
             className="w-full bg-black dark:bg-gray-800 text-white font-semibold py-2 rounded-md hover:bg-green-400 dark:hover:bg-green-600 transition"
-            onClick={logout}
+            onClick={() => {
+              logout();
+              if (changeAuth) {
+                changeAuth(false);
+                onClose();
+              }
+            }}
           >
             Logout
           </button>

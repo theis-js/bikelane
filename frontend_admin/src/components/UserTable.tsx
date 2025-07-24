@@ -1,6 +1,7 @@
 import { MoreVertical } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { deleteUser, updateUserFunc } from "../utils/userHandler.ts";
+import { useContext, useEffect, useState } from "react";
+import { useUsers } from "../utils/useUsers.ts";
+import { AuthContext } from "../utils/context.tsx";
 
 interface User {
   id: number;
@@ -13,27 +14,39 @@ interface User {
   role: string;
 }
 
-interface UserTableProps {
-  users: User[];
-}
-
-const UserTable: React.FC<UserTableProps> = ({ users }) => {
+const UserTable = () => {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
-  const [userList, setUserList] = useState<User[]>(users);
+
+  const {
+    users,
+    refresh: refreshUsers,
+    setUsers,
+    deleteUser,
+    updateUser: updateUserFunc,
+  } = useUsers();
+
+  const refresh = () => {
+    refreshUsers();
+  };
+
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
-    setUserList(users);
-  }, [users]);
+    refresh();
+  }, [auth]);
 
   const handleMenuClick = (userId: number) => {
     setOpenMenu(openMenu === userId ? null : userId);
   };
 
+
   const handleMenuClose = () => setOpenMenu(null);
 
   const handleInputChange = (id: number, field: keyof User, value: string) => {
-    setUserList((prev) =>
-      prev.map((user) => (user.id === id ? { ...user, [field]: value } : user))
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === id ? { ...user, [field]: value } : user
+      )
     );
   };
 
@@ -71,9 +84,9 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
         </tr>
       </thead>
       <tbody className="bg-white text-black dark:bg-gray-900 dark:text-white divide-y divide-gray-100 dark:divide-gray-800 z-10">
-        {userList.map((user, idx) => {
+        {(users ?? []).map((user, idx) => {
           // If this is one of the last 2 rows, open menu upwards
-          const openUp = idx >= userList.length - 2;
+          const openUp = idx >= users.length - 2;
           return (
             <tr
               key={user.id}

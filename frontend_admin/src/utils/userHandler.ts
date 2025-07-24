@@ -12,16 +12,6 @@ export const loginUser = (username: string, password: string) => {
         const data = await response.json();
         Cookies.set("token", data.token, { expires: 7 });
         Cookies.set("name", data.user.first_name, { expires: 7 });
-        await fetch("http://localhost:5002/api/getAllUsers", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((users) => {
-            localStorage.setItem("users", JSON.stringify(users));
-          });
         myToast("Logged in successfully!", "success");
       } else if (response.status === 401) {
         myToast("Invalid username or password!", "error");

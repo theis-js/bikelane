@@ -4,7 +4,11 @@ import LoginCard from "./LoginCard";
 import { greeting } from "../utils/frontendService";
 import { changeTheme } from "../utils/frontendService";
 
-const Header: React.FC = () => {
+export interface HeaderProps {
+  changeAuth?: (isLoggedIn: boolean) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ changeAuth }) => {
   const [loginCardVisible, setLoginCardVisible] = useState(false);
 
   const closeLoginCard = () => {
@@ -40,7 +44,7 @@ const Header: React.FC = () => {
           </ul>
         </nav>
       </div>
-      <div>{loginCardVisible && <LoginCard onClose={closeLoginCard} />}</div>
+      <div>{loginCardVisible && <LoginCard changeAuth={changeAuth} onClose={closeLoginCard} />}</div>
     </header>
   );
 };
