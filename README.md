@@ -2,6 +2,8 @@
 
 Bikelane is a full-stack web application for managing users and administration tasks for a bike lane system. It features a React-based admin panel, a user-facing frontend, and an Express.js backend with a MySQL database.
 
+**Bikelane is currently WIP - later iterations will focus on improving user experience and adding more features. - and will be a fully hosted web app and not a local one**
+
 ## Project Structure
 
 ```
