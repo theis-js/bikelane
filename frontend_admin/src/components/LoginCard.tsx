@@ -1,6 +1,6 @@
 import React from "react";
 import Cookies from "js-cookie";
-import { logout } from "../utils/functions";
+import { logout, loginUser } from "../utils/userHandler";
 type LoginCardProps = {
   onClose: () => void;
 };
@@ -25,38 +25,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
             const formData = new FormData(event.currentTarget);
             const username = formData.get("username");
             const password = formData.get("password");
-            // Example: send login request
-            await fetch("http://localhost:5002/api/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password }),
-            })
-              .then(async (response) => {
-                if (response.ok) {
-                  const data = await response.json();
-                  Cookies.set("token", data.token, { expires: 7 });
-                  onClose();
-                  Cookies.set("name", data.user.first_name, { expires: 7 });
-                  await fetch("http://localhost:5002/api/getAllUsers", {
-                    method: "GET",
-                    headers: {
-                      Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                  })
-                    .then((res) => res.json())
-                    .then((users) => {
-                      localStorage.setItem("users", JSON.stringify(users));
-                    });
-                  document.location.reload();
-                } else if (response.status === 401) {
-                  alert("Invalid credentials");
-                } else if (response.status === 403) {
-                  alert("You are not an Admin!");
-                }
-              })
-              .catch((error) => {
-                console.log("Login failed: ", error);
-              });
+            loginUser(username as string, password as string);
           }}
           className="space-y-4 text-black dark:text-white"
         >

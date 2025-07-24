@@ -1,8 +1,8 @@
 import { useState } from "react";
 import React from "react";
 import LoginCard from "./LoginCard";
-import { greeting } from "../utils/functions";
-import { changeTheme } from "../utils/functions";
+import { greeting } from "../utils/frontendService";
+import { changeTheme } from "../utils/frontendService";
 
 const Header: React.FC = () => {
   const [loginCardVisible, setLoginCardVisible] = useState(false);

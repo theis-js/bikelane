@@ -1,6 +1,6 @@
 import { MoreVertical } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { deleteUser, updateUserFunc } from "../utils/functions.ts";
+import { deleteUser, updateUserFunc } from "../utils/userHandler.ts";
 
 interface User {
   id: number;
@@ -70,100 +70,105 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
           </th>
         </tr>
       </thead>
-      <tbody className="bg-white text-black dark:bg-gray-900 dark:text-white divide-y divide-gray-100 dark:divide-gray-800">
-        {userList.map((user) => (
-          <tr
-            key={user.id}
-            className="hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-          >
-            <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="text"
-                className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
-                id={`username-${user.id}`}
-                value={user.username}
-                onChange={(e) =>
-                  handleInputChange(user.id, "username", e.target.value)
-                }
-              />
-            </td>
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="text"
-                className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
-                id={`first_name-${user.id}`}
-                value={user.first_name}
-                onChange={(e) =>
-                  handleInputChange(user.id, "first_name", e.target.value)
-                }
-              />
-            </td>
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="text"
-                className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
-                id={`last_name-${user.id}`}
-                value={user.last_name}
-                onChange={(e) =>
-                  handleInputChange(user.id, "last_name", e.target.value)
-                }
-              />
-            </td>
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="text"
-                className="w-60 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
-                id={`email-${user.id}`}
-                value={user.email}
-                onChange={(e) =>
-                  handleInputChange(user.id, "email", e.target.value)
-                }
-              />
-            </td>
-            <td className="px-4 py-2 whitespace-nowrap">
-              <input
-                type="text"
-                className="w-25 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
-                id={`password-${user.id}`}
-                value={user.password}
-                onChange={(e) =>
-                  handleInputChange(user.id, "password", e.target.value)
-                }
-              />
-            </td>
-            <td className="px-4 py-2 whitespace-nowrap">{user.created}</td>
-            <td className="px-4 py-2 whitespace-nowrap">{user.role}</td>
-            <td className="px-4 py-2 whitespace-nowrap relative">
-              <button
-                onClick={() => handleMenuClick(user.id)}
-                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-                aria-label="Open actions menu"
-              >
-                <MoreVertical size={18} />
-              </button>
-              {openMenu === user.id && (
-                <div
-                  className="absolute right-0 mt-2 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded shadow-lg z-10"
-                  onMouseLeave={handleMenuClose}
+      <tbody className="bg-white text-black dark:bg-gray-900 dark:text-white divide-y divide-gray-100 dark:divide-gray-800 z-10">
+        {userList.map((user, idx) => {
+          // If this is one of the last 2 rows, open menu upwards
+          const openUp = idx >= userList.length - 2;
+          return (
+            <tr
+              key={user.id}
+              className="hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+            >
+              <td className="px-4 py-2 whitespace-nowrap">{user.id}</td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <input
+                  type="text"
+                  className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
+                  id={`username-${user.id}`}
+                  value={user.username}
+                  onChange={(e) =>
+                    handleInputChange(user.id, "username", e.target.value)
+                  }
+                />
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <input
+                  type="text"
+                  className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
+                  id={`first_name-${user.id}`}
+                  value={user.first_name}
+                  onChange={(e) =>
+                    handleInputChange(user.id, "first_name", e.target.value)
+                  }
+                />
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <input
+                  type="text"
+                  className="w-20 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
+                  id={`last_name-${user.id}`}
+                  value={user.last_name}
+                  onChange={(e) =>
+                    handleInputChange(user.id, "last_name", e.target.value)
+                  }
+                />
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <input
+                  type="text"
+                  className="w-60 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
+                  id={`email-${user.id}`}
+                  value={user.email}
+                  onChange={(e) =>
+                    handleInputChange(user.id, "email", e.target.value)
+                  }
+                />
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">
+                <input
+                  type="text"
+                  className="w-25 bg-transparent border-b border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-400 dark:focus:border-blue-300 text-black dark:text-white"
+                  id={`password-${user.id}`}
+                  value={user.password}
+                  onChange={(e) =>
+                    handleInputChange(user.id, "password", e.target.value)
+                  }
+                />
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap">{user.created}</td>
+              <td className="px-4 py-2 whitespace-nowrap">{user.role}</td>
+              <td className="px-4 py-2 whitespace-nowrap relative">
+                <button
+                  onClick={() => handleMenuClick(user.id)}
+                  className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                  aria-label="Open actions menu"
                 >
-                  <button
-                    onClick={() => updateUserFunc(user.id)}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  <MoreVertical size={18} />
+                </button>
+                {openMenu === user.id && (
+                  <div
+                    className={`absolute right-0 w-32 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded shadow-lg z-50 overflow-visible
+              ${openUp ? "bottom-full mb-2" : "mt-2"}`}
+                    onMouseLeave={handleMenuClose}
                   >
-                    Save
-                  </button>
-                  <button
-                    onClick={() => deleteUser(user.id)}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </td>
-          </tr>
-        ))}
+                    <button
+                      onClick={() => updateUserFunc(user.id)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => deleteUser(user.id)}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

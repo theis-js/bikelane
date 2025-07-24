@@ -50,7 +50,7 @@ app.get("/api/getAllUsers", authenticate, async (req, res) => {
   if (req.user.role === "admin") {
     getAllUsers()
       .then((users) => {
-        res.status(200).json(users).reload();
+        res.status(200).json(users);
       })
       .catch((err) => {
         console.error("Error fetching users:", err);

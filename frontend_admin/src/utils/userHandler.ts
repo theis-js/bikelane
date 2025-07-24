@@ -1,54 +1,38 @@
 import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
 
-export const greeting = () => {
-  return Cookies.get("name") ?? "Login";
-};
-
-export const loadTheme = () => {
-  if (
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  ) {
-    // Switch to dark theme
-    console.log("dark");
-    document.documentElement.classList.add("dark");
-    document.body.classList.add("dark");
-    Cookies.set("theme", "dark", { expires: 365 });
-  } else {
-    // Switch to light theme
-    console.log("light");
-    document.documentElement.classList.remove("dark");
-    document.body.classList.remove("dark");
-    Cookies.set("theme", "light", { expires: 365 });
-  }
-};
-
-export const changeTheme = () => {
-  if (Cookies.get("theme") === "dark") {
-    // Switch to light theme
-    console.log("light");
-    removeDarkTheme();
-  } else if (Cookies.get("theme") === "light") {
-    // Switch to dark theme
-    console.log("dark");
-    setDarkTheme();
-  } else {
-    console.error("Theme not set or recognized");
-  }
-};
-
-export const removeDarkTheme = () => {
-  console.log("Removing dark theme");
-  document.documentElement.classList.remove("dark");
-  document.body.classList.remove("dark");
-  Cookies.set("theme", "light", { expires: 365 });
-};
-
-export const setDarkTheme = () => {
-  console.log("Setting dark theme");
-  document.documentElement.classList.add("dark");
-  document.body.classList.add("dark");
-  Cookies.set("theme", "dark", { expires: 365 });
+export const loginUser = (username: string, password: string) => {
+  fetch("http://localhost:5002/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  })
+    .then(async (response) => {
+      if (response.ok) {
+        const data = await response.json();
+        Cookies.set("token", data.token, { expires: 7 });
+        Cookies.set("name", data.user.first_name, { expires: 7 });
+        await fetch("http://localhost:5002/api/getAllUsers", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        })
+          .then((res) => res.json())
+          .then((users) => {
+            localStorage.setItem("users", JSON.stringify(users));
+          });
+        document.location.reload();
+        toast("Login successful!");
+      } else if (response.status === 401) {
+        toast("Invalid credentials");
+      } else if (response.status === 403) {
+        toast("You are not an Admin!");
+      }
+    })
+    .catch((error) => {
+      console.log("Login failed: ", error);
+    });
 };
 
 export const logout = () => {
