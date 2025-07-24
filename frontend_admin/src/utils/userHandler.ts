@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { myToast } from "./frontendService";
 
 export const loginUser = (username: string, password: string) => {
-  fetch("http://localhost:5002/api/login", {
+  fetch(`http://localhost:5002/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -38,7 +38,7 @@ export const logout = () => {
   Cookies.remove("name");
   Cookies.remove("token");
   localStorage.removeItem("users");
-  myToast("Logged out successfully!", "info");
+  myToast("Logged out successfully!", "success");
 };
 
 export const deleteUser = (id: number) => {
@@ -52,9 +52,9 @@ export const deleteUser = (id: number) => {
   })
     .then((response) => {
       if (response.ok) {
-        replaceUsers();
+        replaceUsers("User deleted successfully!");
       } else {
-        alert("Failed to delete user");
+        myToast("Failed to delete user", "error");
       }
     })
     .catch((error) => {
@@ -62,7 +62,7 @@ export const deleteUser = (id: number) => {
     });
 };
 
-export const replaceUsers = async () => {
+export const replaceUsers = async (alertMessage: string) => {
   localStorage.removeItem("users");
   await fetch("http://localhost:5002/api/getAllUsers", {
     method: "GET",
@@ -73,7 +73,7 @@ export const replaceUsers = async () => {
     .then((res) => res.json())
     .then((users) => {
       localStorage.setItem("users", JSON.stringify(users));
-      window.location.reload();
+      myToast(alertMessage, "success");
     });
 };
 
@@ -99,7 +99,7 @@ export const updateUserFunc = async (userID: number) => {
 
   if (!usernameEl || !firstNameEl || !lastNameEl || !emailEl) {
     console.error("Required form elements not found");
-    alert("Form elements not found");
+    myToast("Form elements not found", "error");
     return;
   }
 
@@ -129,7 +129,7 @@ export const updateUserFunc = async (userID: number) => {
 
     if (response.ok) {
       console.log("User updated successfully");
-      replaceUsers();
+      replaceUsers("User updated successfully!");
     } else {
       const errorText = await response.text();
       console.error("Server error:", response.status, errorText);
