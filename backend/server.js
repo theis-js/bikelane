@@ -36,11 +36,9 @@ app.post("/api/login", async (req, res) => {
         ...result,
       });
     } else if (result.success && result.user.role === "user") {
-      // PROBLEM BELOW DOESNT WORK
-      // FIX LATER
-      res.redirect("http://localhost:5003");
+      res.status(403).json(result, { message: "You are not an Admin!" }); // Event Handler is in LoginCard.tsx - there is defined what happens when the status is 403
     } else {
-      res.status(401).json(result, { message: "Invalid credentials" });
+      res.status(401).json(result, { message: "Invalid credentials" }); // Event Handler is in LoginCard.tsx - there is defined what happens when the status is 401
     }
   } catch (err) {
     console.error("Error logging in:", err);
@@ -117,7 +115,7 @@ app.post("/api/updateUser", authenticate, async (req, res) => {
       });
     console.log("User updated successfully");
   }
-})
+});
 
 app.listen(port, () => {
   console.log(`Express backend server is running at http://localhost:${port}`);

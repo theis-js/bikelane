@@ -22,9 +22,9 @@ export async function loginUser(username, password) {
   );
 
   // If a user is found, return success and user data
-  if (result.length > 0 && result[0].role === "admin") {
-    console.log("User found: ", result[0].username, " ", result[0].id);
-    return { success: true, user: result[0] };
+  if (result.length > 0) {
+    console.log("User found: ", result[0]);
+    return { success: true, user: result[0] }; // result[0] contains ALL of the user data
   } else {
     // If no user is found, return failure message
     console.error(`Invalid username or password!; ${result[0]}`);
@@ -99,10 +99,7 @@ export async function updateUser(
 export async function deleteUser(id) {
   try {
     // Delete user based on username and password
-    const [result] = await pool.query(
-      "DELETE FROM users WHERE id = ?",
-      [id]
-    );
+    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
     const resultOfquery = result.affectedRows;
 
     // If a user was deleted, return success

@@ -50,6 +50,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
                   document.location.reload();
                 } else if (response.status === 401) {
                   alert("Invalid credentials");
+                } else if (response.status === 403) {
+                  alert("You are not an Admin!");
                 }
               })
               .catch((error) => {
