@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { toast, type ToastOptions } from "react-toastify";
 
 export const greeting = () => {
   return Cookies.get("name") ?? "Login";
@@ -49,4 +50,20 @@ export const setDarkTheme = () => {
   document.documentElement.classList.add("dark");
   document.body.classList.add("dark");
   Cookies.set("theme", "dark", { expires: 365 });
+};
+
+export type ToastType = "success" | "error" | "info" | "warning";
+
+export const myToast = (message: string, msgType: ToastType) => {
+  let config: ToastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  };
+  toast[msgType](message, config);
 };

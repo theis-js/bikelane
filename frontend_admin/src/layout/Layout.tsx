@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Cookies from "js-cookie";
 import Sidebar from "../components/Sidebar";
+import { ToastContainer } from "react-toastify";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <Header />
+      <ToastContainer />
       <div className="flex flex-1">
         {isLoggedIn && (
           <>

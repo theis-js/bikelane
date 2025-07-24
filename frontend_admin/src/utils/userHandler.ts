@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { ToastContainer, toast } from "react-toastify";
+import { myToast } from "./frontendService";
 
 export const loginUser = (username: string, password: string) => {
   fetch("http://localhost:5002/api/login", {
@@ -22,12 +22,11 @@ export const loginUser = (username: string, password: string) => {
           .then((users) => {
             localStorage.setItem("users", JSON.stringify(users));
           });
-        document.location.reload();
-        toast("Login successful!");
+        myToast("Logged in successfully!", "success");
       } else if (response.status === 401) {
-        toast("Invalid credentials");
+        myToast("Invalid username or password!", "error");
       } else if (response.status === 403) {
-        toast("You are not an Admin!");
+        myToast("You are not an Admin!", "error");
       }
     })
     .catch((error) => {
@@ -39,7 +38,7 @@ export const logout = () => {
   Cookies.remove("name");
   Cookies.remove("token");
   localStorage.removeItem("users");
-  window.location.reload();
+  myToast("Logged out successfully!", "info");
 };
 
 export const deleteUser = (id: number) => {
