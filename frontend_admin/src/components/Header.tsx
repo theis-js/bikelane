@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   let loginBtnVal: string = "Hello, " + greeting() + "!";
 
   return (
-    <header className="bg-blue-600 text-white p-4 shadow-md">
+    <header className="bg-blue-600 dark:bg-gray-900 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">
           Bikelane <strong>Admin Panel</strong>
@@ -25,13 +25,13 @@ const Header: React.FC = () => {
               <a className="hover:underline">
                 <button
                   onClick={() => changeTheme()}
-                  className="bg-blue-700 shadow-md hover:bg-blue-800 transition padding px-4 py-2 rounded-md text-white font-semibold"
+                  className="bg-blue-700 dark:bg-gray-800 shadow-md hover:bg-blue-800 dark:hover:bg-gray-700 transition padding px-4 py-2 rounded-md text-white font-semibold"
                 >
                   Change Theme
                 </button>
                 <button
                   onClick={() => setLoginCardVisible(true)}
-                  className="bg-blue-700 shadow-md hover:bg-blue-800 transition padding px-4 py-2 rounded-md text-white font-semibold"
+                  className="bg-blue-700 dark:bg-gray-800 shadow-md hover:bg-blue-800 dark:hover:bg-gray-700 transition padding px-4 py-2 rounded-md text-white font-semibold"
                 >
                   {loginBtnVal ?? "Login"}
                 </button>

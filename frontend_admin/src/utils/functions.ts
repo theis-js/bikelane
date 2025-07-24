@@ -27,18 +27,28 @@ export const changeTheme = () => {
   if (Cookies.get("theme") === "dark") {
     // Switch to light theme
     console.log("light");
-    document.documentElement.classList.remove("dark");
-    document.body.classList.remove("dark");
-    Cookies.set("theme", "light", { expires: 365 });
+    removeDarkTheme();
   } else if (Cookies.get("theme") === "light") {
     // Switch to dark theme
     console.log("dark");
-    document.documentElement.classList.add("dark");
-    document.body.classList.add("dark");
-    Cookies.set("theme", "dark", { expires: 365 });
+    setDarkTheme();
   } else {
     console.error("Theme not set or recognized");
   }
+};
+
+export const removeDarkTheme = () => {
+  console.log("Removing dark theme");
+  document.documentElement.classList.remove("dark");
+  document.body.classList.remove("dark");
+  Cookies.set("theme", "light", { expires: 365 });
+};
+
+export const setDarkTheme = () => {
+  console.log("Setting dark theme");
+  document.documentElement.classList.add("dark");
+  document.body.classList.add("dark");
+  Cookies.set("theme", "dark", { expires: 365 });
 };
 
 export const logout = () => {

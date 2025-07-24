@@ -8,7 +8,7 @@ type LoginCardProps = {
 const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/35">
-      <div className="max-w-sm bg-white rounded-xl shadow-md p-8 relative">
+      <div className="max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-md p-8 relative">
         <button
           className="absolute top-4 right-4 bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold shadow hover:bg-red-600 transition focus:outline-none focus:ring-2 focus:ring-red-400"
           onClick={onClose}
@@ -16,7 +16,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-black text-2xl font-bold mb-6 text-center">
+        <h2 className="text-black dark:text-white text-2xl font-bold mb-6 text-center">
           Login
         </h2>
         <form
@@ -58,12 +58,12 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
                 console.log("Login failed: ", error);
               });
           }}
-          className="space-y-4 text-black"
+          className="space-y-4 text-black dark:text-white"
         >
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
               Username
             </label>
@@ -72,13 +72,13 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
               name="username"
               required
               id="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
             />
           </div>
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
               Password
             </label>
@@ -87,7 +87,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
               name="password"
               required
               id="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
             />
           </div>
           {Cookies.get("name") ? (
@@ -102,15 +102,18 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose }) => {
         </form>
         {Cookies.get("name") ? (
           <button
-            className="w-full bg-black text-white font-semibold py-2 rounded-md hover:bg-green-400 transition"
+            className="w-full bg-black dark:bg-gray-800 text-white font-semibold py-2 rounded-md hover:bg-green-400 dark:hover:bg-green-600 transition"
             onClick={logout}
           >
             Logout
           </button>
         ) : (
-          <p className="text-center text-gray-500 mt-4">
+          <p className="text-center text-gray-500 dark:text-gray-400 mt-4">
             Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:underline">
+            <a
+              href="/register"
+              className="text-blue-600 dark:text-blue-400 hover:underline"
+            >
               Register here
             </a>
           </p>

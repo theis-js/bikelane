@@ -1,17 +1,1 @@
 @import "tailwindcss";
-
-/* Example: App.css */
-body.dark {
-  background: #222;
-  color: #fff;
-}
-
-body {
-  background: #fff;
-  color: #222;
-}
-
-html.dark body {
-  background: #222;
-  color: #fff;
-}
