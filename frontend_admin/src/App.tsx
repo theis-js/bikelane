@@ -13,13 +13,10 @@ function App() {
     loadTheme();
   }, []);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!Cookies.get("token")
+  );
   const [showLogin, setShowLogin] = useState(false);
-
-  const handleLogout = () => {
-    Cookies.remove("token");
-    setIsAuthenticated(false);
-  };
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
@@ -43,7 +40,5 @@ function App() {
     </AuthContext.Provider>
   );
 }
-
-
 
 export default App;

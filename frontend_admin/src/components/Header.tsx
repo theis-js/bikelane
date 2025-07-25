@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import Cookies from "js-cookie";
 import { AuthContext } from "../utils/context";
+import { myToast } from "../utils/frontendService";
 
 const Header: React.FC = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-  const username = Cookies.get("username");
+  const firstName = Cookies.get("firstName");
 
   const handleLogout = () => {
     Cookies.remove("token");
-    Cookies.remove("username");
+    Cookies.remove("firstName");
     setIsAuthenticated(false);
+    myToast("Logged out successfully!", "info");
   };
 
   return (
@@ -21,7 +23,7 @@ const Header: React.FC = () => {
         {isAuthenticated && (
           <>
             <span className="text-lg font-semibold text-blue-700 dark:text-blue-200">
-              Hello, {username || "User"}
+              Hello, {firstName || "User"}
             </span>
             <button
               onClick={handleLogout}

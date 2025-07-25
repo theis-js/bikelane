@@ -5,5 +5,5 @@ export const AuthContext = React.createContext<{
   setIsAuthenticated: (auth: boolean) => void;
 }>({
   isAuthenticated: false,
-  setIsAuthenticated: () => { },
+  setIsAuthenticated: () => {},
 });

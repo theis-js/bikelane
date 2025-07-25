@@ -47,7 +47,7 @@ export function useUsers(): UserReturn {
     } catch (error) {
       console.error("Error fetching users:", error);
     }
-  }
+  };
 
   const deleteUser = (id: number) => {
     fetch("http://localhost:5002/api/deleteUser", {
@@ -141,13 +141,11 @@ export function useUsers(): UserReturn {
     }
   };
 
-
-
   return {
     users: users,
     setUsers: setUsers,
     refresh: () => fetchUsers(),
     deleteUser: (id: number) => deleteUser(id),
     updateUser: (id: number) => updateUserFunc(id),
-  }
+  };
 }

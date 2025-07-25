@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import Cookies from "js-cookie";
 import { AuthContext } from "../utils/context";
+import { myToast } from "../utils/frontendService";
 
 interface LoginCardProps {
   onClose: () => void;
@@ -25,11 +26,13 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose, changeAuth }) => {
       const data = await response.json();
       if (response.ok && data.token) {
         Cookies.set("token", data.token);
-        Cookies.set("username", username);
+        Cookies.set("firstName", data.user.first_name);
         setIsAuthenticated(true);
         if (changeAuth) changeAuth(true);
         onClose();
+        myToast("Login successful!", "success");
       } else {
+        myToast("Login failed!", "error");
         setError(data.message || "Login fehlgeschlagen");
       }
     } catch (err) {
@@ -82,4 +85,3 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose, changeAuth }) => {
 };
 
 export default LoginCard;
-
