@@ -33,7 +33,7 @@ export function useUsers(): UserReturn {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5002/api/getAllUsers", {
+      const response = await fetch("http://45.133.75.67:5002/api/getAllUsers", {
         method: "GET",
         headers: headers,
       });
@@ -50,7 +50,7 @@ export function useUsers(): UserReturn {
   };
 
   const deleteUser = (id: number) => {
-    fetch("http://localhost:5002/api/deleteUser", {
+    fetch("http://45.133.75.67:5002/api/deleteUser", {
       method: "POST",
       body: JSON.stringify({ id: id }),
       headers: {
@@ -109,7 +109,7 @@ export function useUsers(): UserReturn {
     console.log("Sending user data:", userData);
 
     try {
-      const response = await fetch("http://localhost:5002/api/updateUser", {
+      const response = await fetch("http://45.133.75.67:5002/api/updateUser", {
         method: "POST",
         body: JSON.stringify(userData),
         headers: {

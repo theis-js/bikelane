@@ -6,7 +6,7 @@ export const loginUser = async (
   password: string
 ): Promise<boolean> => {
   try {
-    const response = await fetch("http://localhost:5002/api/login", {
+    const response = await fetch("http://45.133.75.67:5002/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -31,7 +31,7 @@ export const logout = () => {
 };
 
 export const deleteUser = (id: number) => {
-  fetch("http://localhost:5002/api/deleteUser", {
+  fetch("http://45.133.75.67:5002/api/deleteUser", {
     method: "POST",
     body: JSON.stringify({ id: id }),
     headers: {
@@ -53,7 +53,7 @@ export const deleteUser = (id: number) => {
 
 export const replaceUsers = async () => {
   localStorage.removeItem("users");
-  await fetch("http://localhost:5002/api/getAllUsers", {
+  await fetch("http://45.133.75.67:5002/api/getAllUsers", {
     method: "GET",
     headers: {
       Authorization: `Bearer ${Cookies.get("token")}`,
@@ -104,7 +104,7 @@ export const updateUserFunc = async (userID: number) => {
   console.log("Sending user data:", userData);
 
   try {
-    const response = await fetch("http://localhost:5002/api/updateUser", {
+    const response = await fetch("http://45.133.75.67:5002/api/updateUser", {
       method: "POST",
       body: JSON.stringify(userData),
       headers: {

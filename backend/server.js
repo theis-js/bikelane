@@ -118,7 +118,7 @@ app.post("/api/updateUser", authenticate, async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Express backend server is running at http://localhost:${port}`);
+  console.log(`Express backend server is running at Port: ${port}`);
 });
 
 // error handling code

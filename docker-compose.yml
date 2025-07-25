@@ -1,33 +1,42 @@
 services:
-  #  admin_react-frontend:
-  #    container_name: bikelane-frontend_react-admin
-  #    build: ./frontend_admin
-  #    ports:
-  #      - "5001:5001"
-  #    environment:
-  #      - CHOKIDAR_USEPOLLING=true
-  #    volumes:
-  #      - ./frontend_admin:/app
-  #      - /app/node_modules
-  #    restart: unless-stopped
+  admin_react-frontend:
+    container_name: bikelane-frontend_react-admin
+    build: ./frontend_admin
+    ports:
+      - "5001:5001"
+    networks:
+      - proxynet
+      - bikelane_network
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend_admin:/app
+      - /app/node_modules
+    restart: unless-stopped
 
-  #  user_react-frontend:
-  #    container_name: bikelane-frontend_react-user
-  #    build: ./frontend_user
-  #    ports:
-  #      - "5003:5003"
-  #    environment:
-  #      - CHOKIDAR_USEPOLLING=true
-  #    volumes:
-  #      - ./frontend_user:/app
-  #      - /app/node_modules
-  #    restart: unless-stopped
+  user_react-frontend:
+    container_name: bikelane-frontend_react-user
+    build: ./frontend_user
+    networks:
+      - proxynet
+      - bikelane_network
+    ports:
+      - "5003:5003"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend_user:/app
+      - /app/node_modules
+    restart: unless-stopped
 
   bikelane-backend:
     container_name: bikelane-backend_express
     build: ./backend
     ports:
       - "5002:5002"
+    networks:
+      - proxynet
+      - bikelane_network
     environment:
       DB_HOST: mysql
       DB_USER: root
@@ -43,6 +52,8 @@ services:
     container_name: bikelane-mysql
     image: mysql:8.0
     restart: unless-stopped
+    networks:
+      - bikelane_network
     environment:
       MYSQL_ROOT_PASSWORD: D7Ze0lwV9hMrNQHdz1Q8yi0MIQuOO8
       MYSQL_DATABASE: bikelane
@@ -53,3 +64,9 @@ services:
 
 volumes:
   mysql-data:
+
+networks:
+  proxynet:
+    external: true
+  bikelane_network:
+    external: false
