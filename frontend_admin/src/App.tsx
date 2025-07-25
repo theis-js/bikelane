@@ -16,7 +16,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!Cookies.get("token")
   );
-  const [showLogin, setShowLogin] = useState(false);
+  const [, setShowLogin] = useState(false);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
