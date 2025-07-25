@@ -3,14 +3,6 @@ import express from "express";
 import cors from "cors";
 const app = express();
 const port = 5002;
-import {
-  loginUser,
-  createUser,
-  updateUser,
-  deleteUser,
-  getAllUsers,
-} from "./services/database.js";
-import { generateToken, authenticate } from "./services/tokenService.js";
 import cookieParser from "cookie-parser";
 import router from "./routes/api.js";
 
