@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { toast, type ToastOptions } from "react-toastify";
 
 export const greeting = () => {
-  return Cookies.get("name") ?? "Login";
+  return Cookies.get("username") ?? "Login";
 };
 
 export const loadTheme = () => {

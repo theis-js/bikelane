@@ -14,7 +14,7 @@ export const loginUser = async (
     if (response.ok) {
       const data = await response.json();
       Cookies.set("token", data.token); // Set cookie here
-      Cookies.set("name", data.name);
+      Cookies.set("username", username); // Set username cookie
       return true;
     }
     return false;
@@ -24,7 +24,7 @@ export const loginUser = async (
 };
 
 export const logout = () => {
-  Cookies.remove("name");
+  Cookies.remove("username");
   Cookies.remove("token");
   localStorage.removeItem("users");
   myToast("Logged out successfully!", "info");
