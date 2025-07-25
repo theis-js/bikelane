@@ -6,13 +6,16 @@ import { useEffect } from "react";
 import { loadTheme } from "./utils/frontendService";
 import { myToast } from "./utils/frontendService";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from "js-cookie";
 
 function App() {
   const users = useUsers();
 
   useEffect(() => {
     loadTheme();
-    myToast("User list updated", "success");
+    if (Cookies.get("token")) {
+      myToast("User list updated", "success");
+    }
   }, []);
 
   return (
