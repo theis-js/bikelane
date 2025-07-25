@@ -1,16 +1,15 @@
 import "./App.css";
 import Layout from "./layout/Layout";
-import { useUsers } from "./utils/useUsers";
 import UserTable from "./components/UserTable";
-import { useEffect } from "react";
+import LoginCard from "./components/LoginCard";
+import { useEffect, useState } from "react";
 import { loadTheme } from "./utils/frontendService";
 import { myToast } from "./utils/frontendService";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import { AuthContext } from "./utils/context";
 
 function App() {
-  const users = useUsers();
-
   useEffect(() => {
     loadTheme();
     if (Cookies.get("token")) {
@@ -18,10 +17,31 @@ function App() {
     }
   }, []);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!Cookies.get("token")
+  );
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
-    <Layout>
-      <UserTable users={users} />
-    </Layout>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+      <Layout>
+        {isAuthenticated ? (
+          <UserTable isAuthenticated={isAuthenticated} />
+        ) : (
+          <>
+            <LoginCard
+              onClose={() => setShowLogin(false)}
+              changeAuth={(loggedIn) => setIsAuthenticated(loggedIn)}
+            />
+            <div className="flex items-center justify-center h-full">
+              <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                Please log in to view the user table.
+              </h2>
+            </div>
+          </>
+        )}
+      </Layout>
+    </AuthContext.Provider>
   );
 }
 

@@ -1,41 +1,30 @@
 import Cookies from "js-cookie";
 import { myToast } from "./frontendService";
 
-export const loginUser = (username: string, password: string) => {
-  fetch(`http://localhost:5002/api/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  })
-    .then(async (response) => {
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("token", data.token, { expires: 7 });
-        Cookies.set("name", data.user.first_name, { expires: 7 });
-        await fetch("http://localhost:5002/api/getAllUsers", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        })
-          .then((res) => res.json())
-          .then((users) => {
-            localStorage.setItem("users", JSON.stringify(users));
-          });
-        myToast("Logged in successfully!", "success");
-      } else if (response.status === 401) {
-        myToast("Invalid username or password!", "error");
-      } else if (response.status === 403) {
-        myToast("You are not an Admin!", "error");
-      }
-    })
-    .catch((error) => {
-      console.log("Login failed: ", error);
+export const loginUser = async (
+  username: string,
+  password: string
+): Promise<boolean> => {
+  try {
+    const response = await fetch("http://localhost:5002/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
+    if (response.ok) {
+      const data = await response.json();
+      Cookies.set("token", data.token); // Set cookie here
+      Cookies.set("username", username); // Set username cookie
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
 };
 
 export const logout = () => {
-  Cookies.remove("name");
+  Cookies.remove("username");
   Cookies.remove("token");
   localStorage.removeItem("users");
   myToast("Logged out successfully!", "success");

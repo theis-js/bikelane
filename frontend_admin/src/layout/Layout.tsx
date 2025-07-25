@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../components/Header";
-import Cookies from "js-cookie";
 import Sidebar from "../components/Sidebar";
 import { ToastContainer } from "react-toastify";
 
@@ -9,23 +8,15 @@ type LayoutProps = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const isLoggedIn = !!Cookies.get("name");
-
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <Header />
       <ToastContainer />
       <div className="flex flex-1">
-        {isLoggedIn && (
-          <>
-            {/* Sidebar */}
-            <Sidebar />
-            {/* Main content */}
-            <main className="flex-1 p-10 bg-white/80 dark:bg-gray-900/80 rounded-l-3xl shadow-2xl m-6 overflow-auto text-black dark:text-white">
-              {children}
-            </main>
-          </>
-        )}
+        <Sidebar />
+        <main className="flex-1 p-10 bg-white/80 dark:bg-gray-900/80 rounded-l-3xl shadow-2xl m-6 overflow-auto text-black dark:text-white">
+          {children}
+        </main>
       </div>
       <footer className="bg-gradient-to-r from-blue-800 via-blue-900 to-blue-800 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-blue-100 dark:text-gray-400 py-6 px-5 text-center rounded-t-3xl shadow-xl mt-8 tracking-wide border-t border-blue-700 dark:border-gray-800">
         <div className="flex flex-col items-center gap-2">
