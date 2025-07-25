@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { myToast } from "./frontendService";
 
 export const loginUser = (username: string, password: string) => {
-  fetch(`http://45.133.75.67:5002/api/login`, {
+  fetch("http://localhost:5002/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
@@ -12,7 +12,7 @@ export const loginUser = (username: string, password: string) => {
         const data = await response.json();
         Cookies.set("token", data.token, { expires: 7 });
         Cookies.set("name", data.user.first_name, { expires: 7 });
-        await fetch("http://45.133.75.67:5002/api/getAllUsers", {
+        await fetch("http://localhost:5002/api/getAllUsers", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
@@ -35,7 +35,7 @@ export const loginUser = (username: string, password: string) => {
 };
 
 export const logout = () => {
-  Cookies.remove("name");
+  Cookies.remove("username");
   Cookies.remove("token");
   localStorage.removeItem("users");
   myToast("Logged out successfully!", "success");
