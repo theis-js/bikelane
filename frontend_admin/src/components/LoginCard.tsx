@@ -24,11 +24,11 @@ const LoginCard: React.FC<LoginCardProps> = ({ onClose, changeAuth }) => {
           onSubmit={async (event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            const username = formData.get("username");
-            const password = formData.get("password");
-            loginUser(username as string, password as string);
-            if (changeAuth) {
-              changeAuth(true);
+            const username = formData.get("username") as string;
+            const password = formData.get("password") as string;
+            const success = await loginUser(username, password); // Make loginUser return true/false
+            if (success) {
+              changeAuth?.(true);
               onClose();
             }
           }}

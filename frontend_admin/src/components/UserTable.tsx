@@ -1,7 +1,6 @@
 import { MoreVertical } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUsers } from "../utils/useUsers.ts";
-import { AuthContext } from "../utils/context.tsx";
 
 interface User {
   id: number;
@@ -14,7 +13,11 @@ interface User {
   role: string;
 }
 
-const UserTable = () => {
+interface UserTableProps {
+  isAuthenticated: boolean;
+}
+
+const UserTable: React.FC<UserTableProps> = ({ isAuthenticated }) => {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
 
   const {
@@ -25,20 +28,15 @@ const UserTable = () => {
     updateUser: updateUserFunc,
   } = useUsers();
 
-  const refresh = () => {
-    refreshUsers();
-  };
-
-  const auth = useContext(AuthContext);
-
   useEffect(() => {
-    refresh();
-  }, [auth]);
+    if (isAuthenticated) {
+      refreshUsers();
+    }
+  }, [isAuthenticated]);
 
   const handleMenuClick = (userId: number) => {
     setOpenMenu(openMenu === userId ? null : userId);
   };
-
 
   const handleMenuClose = () => setOpenMenu(null);
 

@@ -1,27 +1,26 @@
 import Cookies from "js-cookie";
 import { myToast } from "./frontendService";
 
-export const loginUser = (username: string, password: string) => {
-  fetch("http://localhost:5002/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  })
-    .then(async (response) => {
-      if (response.ok) {
-        const data = await response.json();
-        Cookies.set("token", data.token, { expires: 7 });
-        Cookies.set("name", data.user.first_name, { expires: 7 });
-        myToast("Logged in successfully!", "success");
-      } else if (response.status === 401) {
-        myToast("Invalid username or password!", "error");
-      } else if (response.status === 403) {
-        myToast("You are not an Admin!", "error");
-      }
-    })
-    .catch((error) => {
-      console.log("Login failed: ", error);
+export const loginUser = async (
+  username: string,
+  password: string
+): Promise<boolean> => {
+  try {
+    const response = await fetch("http://localhost:5002/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
     });
+    if (response.ok) {
+      const data = await response.json();
+      Cookies.set("token", data.token); // Set cookie here
+      Cookies.set("name", data.name);
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
 };
 
 export const logout = () => {
